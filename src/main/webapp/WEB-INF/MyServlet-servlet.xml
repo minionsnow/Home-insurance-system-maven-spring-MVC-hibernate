@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation = "http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	
+	
+	<context:component-scan base-package="com.controllers" />
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driverClassName}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+	</bean>
+	
+	<bean id="mysessionFactory"  
+			class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource"></property>  
+        <property name="annotatedClasses">  
+        <list>  
+        	<value>com.to.User</value>  
+        	<value>com.to.ValidationQuote</value> 
+        	<value>com.to.UserLocation</value> 
+        	<value>com.to.HomeOwner</value>
+        	<value>com.to.UserProperty</value>  
+        	<value>com.to.Policy</value>
+        	<value>com.to.Admin</value>  
+        	<value>com.to.AdminMod</value>
+        </list>  
+        </property>  
+            <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>  
+                <prop key="hibernate.hbm2ddl.auto">update</prop>  
+                <prop key="hibernate.show_sql">true</prop>  
+                 </props>  
+		</property>
+	</bean>
+	
+	<bean id="dbProperties"
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="locations">
+    	<list>
+    	<value>classpath:db.properties</value>
+    	</list>
+    	</property>
+	</bean>
+	
+	<bean id="temp" class="org.springframework.orm.hibernate5.HibernateTemplate">  
+		<property name="sessionFactory" ref="mysessionFactory"></property>  
+	</bean>
+	
+	<bean id="dao" class="com.dao.UserDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean> 
+	
+	<bean id="dao1" class="com.dao.UserLocationDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean> 
+	
+	<bean id="dao2" class="com.dao.UserPropertyDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean> 
+	
+	<bean id="dao3" class="com.dao.ValidationQuoteDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean> 
+	
+	<bean id="dao4" class="com.dao.AdminDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean> 
+	
+	<bean id="dao5" class="com.dao.HomeOwnerDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean>
+	
+	<bean id="dao6" class="com.dao.PolicyDao">  
+		<property name="hibernateTemplate" ref="temp"></property>  
+	</bean>
+	
+</beans>
